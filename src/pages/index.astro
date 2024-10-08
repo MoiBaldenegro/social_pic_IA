@@ -6,7 +6,20 @@ import FeatureCard from "../components/FeatureCard.astro";
 import Testimonial from "../components/Testimonial.astro";
 import UserResultsCarousel from "../components/UserResultsCarousel.astro";
 import { CldUploadWidget } from "astro-cloudinary";
+import { getCldImageUrl } from "astro-cloudinary/helpers";
+// astro
+const { searchParams } = Astro.url;
+const id = searchParams.get("id");
+let url = "nada";
+console.log(id);
 
+if (id) {
+  url = getCldImageUrl({ src: id });
+  console.log(url);
+}
+
+//local
+// const { searchParamsLocal } = new URL(window.location.href);
 const features = [
   {
     title: t("features.quick.title"),
@@ -59,8 +72,16 @@ const userResults = [
 ];
 ---
 
-<Layout title={t("site.title")}>
+<Layout title="SocialPicAI">
   <main class="container mx-auto px-4 py-8">
+    <main class="container mx-auto px-4 py-8">
+      <img
+        src={url}
+        alt="facebook image"
+        class="w-full h-full object-cover rounded"
+      />
+    </main>
+    <small>{url}</small>
     <h1 class="text-4xl font-bold mb-8 text-center">
       <Trans i18nKey="home.title">
         Genera <span class="text-gradient">Imágenes Profesionales</span> para Redes
@@ -96,8 +117,63 @@ const userResults = [
         </button>
       </form>
     </div>
-    <CldUploadWidget uploadPreset="mxvi-upload">
-      <button id="cdWidget">Iniciar transformación</button>
+    <CldUploadWidget
+      options={{
+        sources: ["facebook"],
+        multiple: false,
+        maxFiles: 1,
+        language: "es",
+        text: {
+          es: {
+            dropbox: {
+              dd_title_single: "Sube tu foto",
+            },
+          },
+        },
+        styles: {},
+      }}
+      uploadPreset="mxvi-upload"
+    >
+      <button id="cdWidget">Facebook</button>
+    </CldUploadWidget>
+    <CldUploadWidget
+      options={{
+        sources: ["instagram"],
+        multiple: false,
+        maxFiles: 1,
+        language: "es",
+        text: {
+          es: {
+            dropbox: {
+              dd_title_single: "Sube tu foto",
+            },
+          },
+        },
+        styles: {},
+      }}
+      uploadPreset="mxvi-upload"
+    >
+      <button id="cdWidget">Instagram</button>
+    </CldUploadWidget>
+    <CldUploadWidget
+      id="local-widget"
+      options={{
+        sources: ["local"],
+        multiple: false,
+        maxFiles: 1,
+        language: "es",
+        text: {
+          es: {
+            dropbox: {
+              dd_title_single: "Sube tu foto",
+            },
+          },
+        },
+        styles: {},
+      }}
+      uploadPreset="mxvi-upload"
+    >
+      <button id="cdWidget">Local</button>
     </CldUploadWidget>
     <div
       id="results"
@@ -132,6 +208,19 @@ const userResults = [
 </Layout>
 
 <script>
+  import { navigate } from "astro:transitions/client";
+
+  const widget = document.getElementById("local-widget");
+
+  if (widget) {
+    widget.addEventListener("clduploadwidget:success", ((
+      e: CustomEvent<{ info: { public_id: string } }>
+    ) => {
+      const public_id = e.detail.info.public_id;
+      navigate(`/previews?id=${public_id}`);
+    }) as EventListener);
+  }
+
   document.getElementById("imageForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;

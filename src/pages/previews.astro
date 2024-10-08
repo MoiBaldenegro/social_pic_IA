@@ -1,0 +1,24 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCldImageUrl } from "astro-cloudinary/helpers";
+
+const { searchParams } = Astro.url;
+const id = searchParams.get("id");
+
+if (id === null) {
+  console.log("id es null");
+  // acapodemos abrir un modal
+}
+const url = getCldImageUrl({ src: id });
+---
+
+<Layout title="SocialPicAI">
+  <main class="container mx-auto px-4 py-8">
+    <img
+      src={url}
+      alt="facebook image"
+      class="w-full h-full object-cover rounded"
+    />
+  </main>
+</Layout>
+<style></style>
