@@ -4,6 +4,7 @@ import { t } from "i18next";
 import { Trans } from "astro-i18next/components";
 import FeatureCard from '../components/FeatureCard.astro';
 import Testimonial from '../components/Testimonial.astro';
+import UserResultsCarousel from '../components/UserResultsCarousel.astro';
 
 const features = [
   { title: t('features.quick.title'), description: t('features.quick.description'), icon: '⚡' },
@@ -14,6 +15,12 @@ const features = [
 const testimonials = [
   { name: t('testimonials.user1.name'), role: t('testimonials.user1.role'), content: t('testimonials.user1.content'), avatar: 'https://i.pravatar.cc/150?img=1' },
   { name: t('testimonials.user2.name'), role: t('testimonials.user2.role'), content: t('testimonials.user2.content'), avatar: 'https://i.pravatar.cc/150?img=2' },
+];
+
+const userResults = [
+  { name: "Ana Martínez", before: "/images/before1.jpg", after: "/images/after1.jpg" },
+  { name: "Carlos Gómez", before: "/images/before2.jpg", after: "/images/after2.jpg" },
+  { name: "Laura Sánchez", before: "/images/before3.jpg", after: "/images/after3.jpg" },
 ];
 ---
 
@@ -43,6 +50,11 @@ const testimonials = [
 		<div id="results" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 			<!-- Los resultados se mostrarán aquí -->
 		</div>
+
+		<section class="my-12">
+			<h2 class="text-3xl font-bold mb-6 text-center">{t('userResults.title')}</h2>
+			<UserResultsCarousel results={userResults} />
+		</section>
 
 		<section class="my-12">
 			<h2 class="text-3xl font-bold mb-6 text-center">{t('features.title')}</h2>

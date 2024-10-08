@@ -5,7 +5,7 @@ import { localizePath } from "astro-i18next";
 import { LanguageSelector } from "astro-i18next/components";
 
 interface Props {
-  title: string;
+	title: string;
 }
 
 const { title } = Astro.props;
@@ -13,90 +13,74 @@ const { title } = Astro.props;
 
 <!doctype html>
 <html lang={i18next.language}>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content={t("site.description")} />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <HeadHrefLangs />
-    <title>{title}</title>
-  </head>
-  <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
-    <header class="p-4 flex justify-between items-center">
-      <a href={localizePath("/")} class="text-2xl font-bold"
-        >{t("site.title")}</a
-      >
-      <nav>
-        <LanguageSelector
-          showFlag={true}
-          class="bg-white dark:bg-gray-800 p-2 rounded"
-          languageMapping={{
-            en: "English",
-            es: "Español",
-          }}
-        />
-      </nav>
-    </header>
-    <slot />
-    <footer class="p-4 text-center">
-      <p>&copy; 2023 {t("site.title")}. {t("footer.rights")}</p>
-    </footer>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={t('site.description')} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<HeadHrefLangs />
+		<title>{title}</title>
+	</head>
+	<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+		<header class="p-4 flex justify-between items-center">
+			<a href={localizePath("/")} class="text-2xl font-bold">{t('site.title')}</a>
+			<nav>
+				<LanguageSelector showFlag={true} class="bg-white dark:bg-gray-800 p-2 rounded" />
+			</nav>
+		</header>
+		<slot />
+		<footer class="p-4 text-center">
+			<p>&copy; 2023 {t('site.title')}. {t('footer.rights')}</p>
+		</footer>
+	</body>
 </html>
 <style is:global>
-  :root {
-    --accent: 136, 58, 234;
-    --accent-light: 224, 204, 250;
-    --accent-dark: 49, 10, 101;
-    --accent-gradient: linear-gradient(
-      45deg,
-      rgb(var(--accent)),
-      rgb(var(--accent-light)) 30%,
-      white 60%
-    );
-  }
-  html {
-    font-family: system-ui, sans-serif;
-    background-size: 224px;
-  }
-  code {
-    font-family:
-      Menlo,
-      Monaco,
-      Lucida Console,
-      Liberation Mono,
-      DejaVu Sans Mono,
-      Bitstream Vera Sans Mono,
-      Courier New,
-      monospace;
-  }
+	:root {
+		--accent: 136, 58, 234;
+		--accent-light: 224, 204, 250;
+		--accent-dark: 49, 10, 101;
+		--accent-gradient: linear-gradient(
+			45deg,
+			rgb(var(--accent)),
+			rgb(var(--accent-light)) 30%,
+			white 60%
+		);
+	}
+	html {
+		font-family: system-ui, sans-serif;
+		background-size: 224px;
+	}
+	code {
+		font-family:
+			Menlo,
+			Monaco,
+			Lucida Console,
+			Liberation Mono,
+			DejaVu Sans Mono,
+			Bitstream Vera Sans Mono,
+			Courier New,
+			monospace;
+	}
 </style>
 
 <script>
   // Función para alternar el modo oscuro
   function toggleDarkMode() {
-    document.documentElement.classList.toggle("dark");
-    localStorage.setItem(
-      "darkMode",
-      document.documentElement.classList.contains("dark")
-    );
+    document.documentElement.classList.toggle('dark');
+    localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
   }
 
   // Verificar la preferencia del usuario
-  if (
-    localStorage.getItem("darkMode") === "true" ||
-    (!("darkMode" in localStorage) &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches)
-  ) {
-    document.documentElement.classList.add("dark");
+  if (localStorage.getItem('darkMode') === 'true' ||
+      (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark');
   }
 
   // Agregar el botón de alternancia al DOM y configurar el evento
-  const darkModeToggle = document.createElement("button");
-  darkModeToggle.innerHTML = "🌓";
-  darkModeToggle.className =
-    "fixed bottom-4 right-4 bg-gray-200 dark:bg-gray-700 p-2 rounded-full";
-  darkModeToggle.addEventListener("click", toggleDarkMode);
+  const darkModeToggle = document.createElement('button');
+  darkModeToggle.innerHTML = '🌓';
+  darkModeToggle.className = 'fixed bottom-4 right-4 bg-gray-200 dark:bg-gray-700 p-2 rounded-full';
+  darkModeToggle.addEventListener('click', toggleDarkMode);
   document.body.appendChild(darkModeToggle);
 </script>
