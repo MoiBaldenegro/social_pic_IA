@@ -1,0 +1,108 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { t } from "i18next";
+import { Trans } from "astro-i18next/components";
+import FeatureCard from '../components/FeatureCard.astro';
+import Testimonial from '../components/Testimonial.astro';
+
+const features = [
+  { title: t('features.quick.title'), description: t('features.quick.description'), icon: '⚡' },
+  { title: t('features.professional.title'), description: t('features.professional.description'), icon: '🎨' },
+  { title: t('features.customizable.title'), description: t('features.customizable.description'), icon: '🔧' },
+];
+
+const testimonials = [
+  { name: t('testimonials.user1.name'), role: t('testimonials.user1.role'), content: t('testimonials.user1.content'), avatar: 'https://i.pravatar.cc/150?img=1' },
+  { name: t('testimonials.user2.name'), role: t('testimonials.user2.role'), content: t('testimonials.user2.content'), avatar: 'https://i.pravatar.cc/150?img=2' },
+];
+---
+
+<Layout title={t('site.title')}>
+	<main class="container mx-auto px-4 py-8">
+		<h1 class="text-4xl font-bold mb-8 text-center">
+			<Trans i18nKey="home.title">
+				Genera <span class="text-gradient">Imágenes Profesionales</span> para Redes Sociales
+			</Trans>
+		</h1>
+		
+		<div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-12">
+			<form id="imageForm" class="space-y-4">
+				<div>
+					<label for="userImage" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+						{t('form.uploadImage')}
+					</label>
+					<input type="file" id="userImage" name="userImage" accept="image/*" required
+						class="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
+				</div>
+				<button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+					{t('form.generate')}
+				</button>
+			</form>
+		</div>
+
+		<div id="results" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+			<!-- Los resultados se mostrarán aquí -->
+		</div>
+
+		<section class="my-12">
+			<h2 class="text-3xl font-bold mb-6 text-center">{t('features.title')}</h2>
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+				{features.map(feature => (
+					<FeatureCard {...feature} />
+				))}
+			</div>
+		</section>
+
+		<section class="my-12">
+			<h2 class="text-3xl font-bold mb-6 text-center">{t('testimonials.title')}</h2>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+				{testimonials.map(testimonial => (
+					<Testimonial {...testimonial} />
+				))}
+			</div>
+		</section>
+	</main>
+</Layout>
+
+<script>
+	document.getElementById('imageForm').addEventListener('submit', async (e) => {
+		e.preventDefault();
+		const formData = new FormData(e.target);
+		const image = formData.get('userImage');
+		
+		if (image) {
+			// Aquí iría la lógica para procesar la imagen y generar las versiones para redes sociales
+			// Por ahora, simularemos el proceso con un retraso
+			await new Promise(resolve => setTimeout(resolve, 2000));
+			
+			const socialNetworks = ['Instagram', 'Facebook', 'Twitter/X', 'LinkedIn', 'TikTok', 'YouTube'];
+			const resultsContainer = document.getElementById('results');
+			resultsContainer.innerHTML = '';
+			
+			socialNetworks.forEach(network => {
+				const card = document.createElement('div');
+				card.className = 'bg-white dark:bg-gray-800 rounded-lg shadow-md p-4';
+				card.innerHTML = `
+					<h3 class="text-lg font-semibold mb-2">${network}</h3>
+					<div class="aspect-w-1 aspect-h-1 bg-gray-200 rounded">
+						<img src="${URL.createObjectURL(image)}" alt="${network} image" class="object-cover rounded">
+					</div>
+					<button class="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded text-sm">
+						Descargar
+					</button>
+				`;
+				resultsContainer.appendChild(card);
+			});
+		}
+	});
+</script>
+
+<style>
+	.text-gradient {
+		background-image: var(--accent-gradient);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-size: 400%;
+		background-position: 0%;
+	}
+</style>
