@@ -15,10 +15,6 @@ if (id === null) {
 
 const url = getCldImageUrl({ src: id });
 
-const action = () => {
-  alert("sendFunction");
-};
-
 const data = {
   data: "data",
 };
@@ -27,47 +23,42 @@ const data = {
 <Layout title="SocialPicAI">
   <main class="container mx-auto px-4 py-8" data-id={id}>
     <button id="download-button">Download Image</button>
-   
-    // agregaremos clases para ue el div de las imagenes sea un grid responsive auto ajustable
-    <div class="grid grid-cols-2 gap-4 md:grid-cols-3  ">
+
+    // agregaremos clases para ue el div de las imagenes sea un grid responsive
+    auto ajustable
+    <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
       <div>
         <FacebookPreview
-      name="John Doe"
-      profilePicture="https://via.placeholder.com/120"
-      coverPhoto="https://via.placeholder.com/500x200"
-      friendCount={1000}
-    />
-
+          name="John Doe"
+          profilePicture="https://via.placeholder.com/120"
+          coverPhoto="https://via.placeholder.com/500x200"
+          friendCount={1000}
+        />
       </div>
-      
-
-   
       <img
-      hidden
+        hidden
         id="previewFacebook"
         src={url}
         width={800}
         height={800}
         alt="facebook__image"
-    
       />
       <img
-    hidden
-      id="instagram-preview"
-      src={url}
-      width={800}
-      height={800}
-      alt="facebook__image"
-    />
-    <img
-    hidden
-      id="preview-twitter"
-      src={url}
-      width={800}
-      height={800}
-      alt="facebook__image"
-  
-    />
+        hidden
+        id="instagram-preview"
+        src={url}
+        width={800}
+        height={800}
+        alt="facebook__image"
+      />
+      <img
+        hidden
+        id="preview-twitter"
+        src={url}
+        width={800}
+        height={800}
+        alt="facebook__image"
+      />
     </div>
     <two-up id="two-up" hidden>
       <img
@@ -142,7 +133,7 @@ const data = {
     const zip = new JSZip();
 
     try {
-      const facebookResponse = await fetch(urlFacebook);
+      const facebookResponse = await fetch(urlFacebook); // check
       const facebookBlob = await facebookResponse.blob();
       zip.file("facebook_image.jpg", facebookBlob);
 
@@ -157,7 +148,7 @@ const data = {
       const content = await zip.generateAsync({ type: "blob" });
       saveAs(content, "images.zip");
     } catch (error) {
-      console.error('Error creando el ZIP:', error);
+      console.error("Error creando el ZIP:", error);
     }
   };
 
@@ -201,5 +192,4 @@ const data = {
   if (previewTwitter) {
     previewTwitter.src = urlTwitter;
   }
-
 </script>

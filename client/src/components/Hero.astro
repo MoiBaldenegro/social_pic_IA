@@ -1,0 +1,19 @@
+---
+import { Trans } from "astro-i18next/components";
+---
+
+<main class="container md:mx-auto px-4 py-2 md:py-8"></main>
+<h1 class="text-4xl font-bold mb-8 text-center">
+  <Trans i18nKey="home.title">
+    Genera <span class="text-gradient">Imágenes Profesionales</span> para Redes Sociales
+  </Trans>
+</h1>
+<style>
+  .text-gradient {
+    background-image: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 400%;
+    background-position: 0%;
+  }
+</style>
