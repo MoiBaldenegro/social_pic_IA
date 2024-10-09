@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { getCldImageUrl } from "astro-cloudinary/helpers";
 import { promts } from "../../public/promts/promts";
+import { CldImage } from "astro-cloudinary";
 
 const { searchParams } = Astro.url;
 const id = searchParams.get("id");
@@ -23,12 +24,62 @@ const data = {
 
 <Layout title="SocialPicAI">
   <main class="container mx-auto px-4 py-8" data-id={id}>
-    <img
-      id="image"
+    <a href={url} download="image.png">descargar aca</a>
+    <CldImage
+      id="preview"
       src={url}
-      alt="facebook image"
-      class="w-full h-full object-cover rounded"
+      width={250}
+      height={250}
+      alt="facebook__image"
+      sizes="100vw"
+      crop={{
+        type: "fill",
+        source: false,
+      }}
+      overlays={[
+        {
+          position: {
+            y: 40,
+            x: -10,
+            gravity: "south",
+          },
+          text: {
+            color: "magenta",
+            fontFamily: "Source Sans Pro",
+            fontSize: 160,
+            fontWeight: "black",
+            text: "OUT OF THIS WORLD",
+          },
+        },
+        {
+          position: {
+            y: 50,
+            gravity: "south",
+          },
+          text: {
+            color: "white",
+            fontFamily: "Source Sans Pro",
+            fontSize: 160,
+            fontWeight: "black",
+            text: "OUT OF THIS WORLD",
+          },
+        },
+      ]}
     />
+    <two-up>
+      <img
+        id="original"
+        src={url}
+        alt="facebook image"
+        class="w-full h-full object-cover rounded"
+      />
+      <img
+        id="preview"
+        src={url}
+        alt="facebook image"
+        class="w-full h-full object-cover rounded"
+      />
+    </two-up>
   </main>
   <button id={promts.filterHalloween}>Transform Image 1</button>
   <button>Transform Image 2</button>
@@ -36,11 +87,15 @@ const data = {
 <style></style>
 <script>
   import { getCldImageUrl } from "astro-cloudinary/helpers";
-  import type { on } from "pdfkit";
+  import "two-up-element";
 
   const buttons = document.querySelectorAll("button");
   const id = document.querySelector("main")?.getAttribute("data-id");
-  const image = document.getElementById("image");
+  const previews = document.querySelectorAll("#preview");
+
+  const url = getCldImageUrl({
+    src: id,
+  });
 
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -48,11 +103,13 @@ const data = {
         src: id,
         replaceBackground: "un fondo terrofico con alusion a halloween",
       });
-      image.style.opacity = "0.3";
-      image.src = url;
-      image.onload = () => {
-        image.style.opacity = "1";
-      };
+      previews.forEach((preview) => {
+        preview.style.opacity = "0.3";
+        preview.src = url;
+        preview.onload = () => {
+          preview.style.opacity = "1";
+        };
+      });
     });
   });
 </script>
