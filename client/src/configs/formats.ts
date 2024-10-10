@@ -1,4 +1,3 @@
-import { createPortal } from "react-dom";
 import { PreviewsOptions } from "../types/previews.types";
 
 export const networksFormats = {
