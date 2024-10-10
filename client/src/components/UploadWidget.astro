@@ -1,6 +1,10 @@
 ---
 import { CldUploadWidget } from "astro-cloudinary";
-import { t } from "i18next";
+import { getI18n } from "../i18n";
+
+const {currentLocale = "en"} = Astro;
+
+const i18n = getI18n({currentLocale});
 ---
 
 <div
@@ -12,7 +16,7 @@ import { t } from "i18next";
         for="userImage"
         class="block text-sm font-medium text-gray-700 dark:text-gray-300"
       >
-        {t("form.uploadImage")}
+        {i18n.form.uploadImage}
       </label>
       <input
         type="file"
@@ -27,7 +31,7 @@ import { t } from "i18next";
       type="submit"
       class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
     >
-      {t("form.generate")}
+      {i18n.form.generate}
     </button>
   </form>
 

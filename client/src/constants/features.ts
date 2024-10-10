@@ -1,19 +1,18 @@
-import { t } from "i18next";
 
 export const features = [
   {
-    title: t("features.quick.title"),
-    description: t("features.quick.description"),
+    title: "features.quick.title",
+    description: "features.quick.description",
     icon: "⚡",
   },
   {
-    title: t("features.professional.title"),
-    description: t("features.professional.description"),
+    title: "features.professional.title",
+    description: "features.professional.description",
     icon: "🎨",
   },
   {
-    title: t("features.customizable.title"),
-    description: t("features.customizable.description"),
+    title: "features.customizable.title",
+    description: "features.customizable.description",
     icon: "🔧",
   },
 ];

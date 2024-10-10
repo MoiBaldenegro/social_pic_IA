@@ -1,9 +1,9 @@
 ---
-import { HeadHrefLangs } from "astro-i18next/components";
-import i18next, { t } from "i18next";
-import { localizePath } from "astro-i18next";
-import { LanguageSelector } from "astro-i18next/components";
+import { getI18n } from "../i18n";
 
+const {currentLocale = "en"} = Astro;
+
+const i18n = getI18n({currentLocale});
 interface Props {
   title: string;
 }
@@ -11,27 +11,25 @@ const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang={i18next.language}>
+<html >
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={t("site.description")} />
+    <meta name="description" content={i18n.site.description} />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/src/styles/global.css" />
     <meta name="generator" content={Astro.generator} />
-    <HeadHrefLangs />
     <title>{title}</title>
   </head>
   <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
     <header class="flex flex-col md:flex-row justify-between items-center">
       <div class="flex flex-col md:flex-row gap-4 md:items-center px-8">
-        <a href={localizePath("/")} class="text-2xl text-center font-bold py-8"
-          >{t("site.title")}</a
+        <a  class="text-2xl text-center font-bold py-8"
+          >{i18n.site.title}</a
         >
         <img src="./escudo.png" alt="logo" class="w-[200px] h-[200px] logo" />
       </div>
       <nav class="hidden md:block md:p-8">
-        <LanguageSelector
           showFlag={true}
           class="bg-white dark:bg-gray-800 p-2 rounded"
         />
@@ -39,7 +37,7 @@ const { title } = Astro.props;
     </header>
     <slot />
     <footer class="p-4 text-center">
-      <p>&copy; 2023 {t("site.title")}. {t("footer.rights")}</p>
+      <p> {i18n.site.title}. {i18n.footer.rights}</p>
     </footer>
   </body>
 </html>

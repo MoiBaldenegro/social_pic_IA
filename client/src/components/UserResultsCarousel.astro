@@ -1,12 +1,15 @@
 ---
-import { t } from "i18next";
-import { getTsBuildInfoEmitOutputFilePath } from "typescript";
 import { userResults } from "../constants/userResults";
+import { getI18n } from "../i18n";
+
+const {currentLocale = "en"} = Astro;
+
+const i18n = getI18n({currentLocale});
 ---
 
 <section class="my-12">
   <h2 class="text-3xl font-bold mb-6 text-center">
-    {t("userResults.title")}
+    {i18n.userResults.title}
     <div class="user-results-carousel relative">
       <div class="carousel-container overflow-hidden">
         <div

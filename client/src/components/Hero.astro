@@ -1,12 +1,13 @@
 ---
-import { Trans } from "astro-i18next/components";
----
+import { getI18n } from "../i18n";
 
+const {currentLocale = "en"} = Astro;
+
+const i18n = getI18n({currentLocale});
+---
 <main class="container md:mx-auto px-4 py-2 md:py-8"></main>
 <h1 class="text-4xl font-bold mb-8 text-center">
-  <Trans i18nKey="home.title">
-    Genera <span class="text-gradient">Imágenes Profesionales</span> para Redes Sociales
-  </Trans>
+   { i18n.hero.title }
 </h1>
 <style>
   .text-gradient {
