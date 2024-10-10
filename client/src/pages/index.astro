@@ -19,6 +19,10 @@ import Testimonials from "../components/Testimonials.astro";
   <main class="container mx-auto md:px-4 md:py-8">
     <Hero />
     <UploadWidget />
+    // crearemos un preview de la imagen subida antes de Transformar
+    <div id="preview-image-container">
+      // Ava previsualizamos la imagen antes de enviarla
+    </div>
     <div
       id="results"
       class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
@@ -26,6 +30,13 @@ import Testimonials from "../components/Testimonials.astro";
       <!-- Los resultados se mostrarán aquí -->
     </div>
     <button id="download-button-index">Download SuperSet</button>
+    <h2 id="select-prompt">Select Prompt</h2>
+    <div
+      id="select-prompt-container"
+      class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+    >
+      <!-- Los estilos de los prompts se mostrarán aquí -->
+    </div>
     <UserResultsCarousel />
     <Features />
     <Testimonials />
@@ -38,9 +49,38 @@ import Testimonials from "../components/Testimonials.astro";
   import { facebookPreview } from "../templates/preview";
   import { PreviewsOptions } from "../types/previews.types";
   import { descargarZip } from "../utils/dowloader/downloader";
+  import { promtsOptions } from "../configs/promts";
+
   const ImagenDePrueba = transformerModel("https://www.google.com");
   const widget = document.getElementById("local-widget");
   let downloads: [] = [];
+  import { networksFormats } from "../configs/formats";
+
+  let selectedPromt = null;
+
+  const stylePromts = document.getElementById("select-prompt-container");
+
+  if (stylePromts) {
+    stylePromts.innerHTML = "";
+    const stylePromtsOptions = document.createElement("div");
+    stylePromtsOptions.className =
+      "bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-12";
+
+    promtsOptions.forEach((option) => {
+      const stylePromt = document.createElement("button");
+      stylePromt.className =
+        "w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded";
+      stylePromt.innerHTML = option.name;
+      stylePromt.addEventListener("click", () => {
+        selectedPromt = option.value;
+        stylePromtsOptions.innerHTML = "";
+        stylePromtsOptions.appendChild(stylePromt);
+      });
+      stylePromtsOptions.appendChild(stylePromt);
+    });
+    // Agregar el evento de descarga al botón creado
+    stylePromts.appendChild(stylePromtsOptions);
+  }
 
   if (widget) {
     widget.addEventListener("clduploadwidget:success", ((
@@ -48,65 +88,25 @@ import Testimonials from "../components/Testimonials.astro";
     ) => {
       const public_id = e.detail.info.public_id;
       //navigate(`/previews?id=${public_id}`);
-      const urlFacebook = getCldImageUrl({
-        src: public_id,
-        replaceBackground: "un fondo terrorífico con alusión a halloween",
-        crop: {
-          height: 720,
-          width: 720,
-          source: true,
-          type: "fill",
-          gravity: "face",
-        },
-      });
-      const urlFacebookBio = getCldImageUrl({
-        src: public_id,
-        replaceBackground: "un fondo terrorífico con alusión a halloween",
-        crop: {
-          height: 312,
-          width: 820,
-          source: true,
-          type: "fill",
-          gravity: "face",
-        },
-      });
-      const resultsContainer = document.getElementById("results");
-      resultsContainer.innerHTML = "";
-      const socialNetworks = [
-        {
-          name: PreviewsOptions.FACEBOOK_PROFILE,
-          url: urlFacebook,
-          title: "Facebook profile: 720 x 720px",
-        },
-        {
-          name: PreviewsOptions.FACEBOOK_BIO,
-          url: urlFacebookBio,
-          title: "Facebook bio: 820 x 312px",
-        },
-      ];
 
-      socialNetworks.forEach((network) => {
-        downloads.push(network);
-        const card = document.createElement("div");
-        card.className = "bg-white dark:bg-gray-800 rounded-lg shadow-md p-4";
-        card.innerHTML = facebookPreview(
-          network.url,
-          network.name,
-          network.title
-        );
+      /////////////////////////////////////////////////////////////////
+      /////  imagen antes de transformar //////////////////////////////
+      ////////////////////////////////////////////////////////////////
 
-        // Agregar el evento de descarga al botón creado
-        const button = card.querySelector("button");
-        button.addEventListener("click", () => {
-          const downloadLink = document.createElement("a");
-          downloadLink.href = urlFacebook;
-          downloadLink.download = `${network}.png`;
-          downloadLink.click();
-        });
-        resultsContainer.appendChild(card);
+      const previesBefore = document.getElementById("preview-image-container");
+      const previewImage = document.createElement("img");
+      previewImage.className = "w-[250px] h-[250px] object-cover rounded";
+      const previewImageUrl = getCldImageUrl({
+        src: public_id,
       });
+      previewImage.src = previewImageUrl;
+      previesBefore.appendChild(previewImage);
+      // previsualizamos y guardamos la id - solo eso haremos
+
+      /////////////////////////////////////////////////////////////////
     }) as EventListener);
   }
+
   document.getElementById("imageForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
